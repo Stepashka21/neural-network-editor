@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <WindowEditor />
+    <TestList />
   </div>
 </template>
 
 <script>
-import WindowEditor from "./components/WindowEditor.vue";
+import TestList from './components/TestList.vue';
+// import WindowEditor from "./components/WindowEditor.vue";
 
 export default {
   name: "App",
   components: {
-    WindowEditor,
+    // WindowEditor,
+    TestList,
   },
 };
 </script>
