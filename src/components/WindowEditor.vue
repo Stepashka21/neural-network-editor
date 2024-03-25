@@ -18,35 +18,53 @@
           <button @click="clearCanvas" style="margin-left: 10px">
             Очистить холст
           </button>
-          <button @click="changeMode('pencil')" style="margin-left: 10px">
+          <button
+            id="pencilBtn"
+            @click="changeMode('pencil')"
+            style="margin-left: 10px"
+          >
             Карандаш
           </button>
-          <button @click="changeMode('zoom')" style="margin-left: 10px">
+          <button
+            id="zoomBtn"
+            @click="changeMode('zoom')"
+            style="margin-left: 10px"
+          >
             Фигуры
           </button>
-          <button @click="changeMode('hand')" style="margin-left: 10px">
+          <button
+            id="handBtn"
+            @click="changeMode('hand')"
+            style="margin-left: 10px"
+          >
             Вставить изображение
           </button>
         </div>
         <div class="infoPositions">
-          <img src="img/pngwing_5.png" alt="Позиция" style="max-height: 21px" />
-          <span style="color: black">{{ mousePosition }}</span>
+          <img
+            src="../../src/assets/pngwing_5.png"
+            alt="Позиция"
+            style="max-height: 21px"
+          />
+          <span id="mousePosition" style="color: black">{{
+            mousePosition
+          }}</span>
         </div>
       </div>
       <canvas ref="canvas" width="1660" height="730"></canvas>
       <div class="parameters">
         <div class="query">
           <div class="choiceQuery">
-            <button @click="querySec">Запрос на генерацию изображения</button>
-            <button @click="querySec">Негативный запрос</button>
+            <button id="selection-1" @click="querySec1()">
+              Запрос на генерацию изображения
+            </button>
+            <button id="selection-2" @click="querySec2()">
+              Негативный запрос
+            </button>
           </div>
           <div>
-            <textarea v-show="textarea1Visible" id="textarea-1">
-Введите Ваш запрос...</textarea
-            >
-            <textarea v-show="textarea2Visible" id="textarea-2">
-Введите Ваш запрос...</textarea
-            >
+            <textarea v-show="textarea1" id="textarea-1">Введите Ваш запрос...</textarea>
+            <textarea v-show="textarea2" id="textarea-2">Введите Ваш запрос...</textarea>
           </div>
         </div>
         <div class="settings">
@@ -68,7 +86,7 @@
       </div>
       <dialog ref="diaOptions">
         <span>dvsndfsfbnlvnsdfnvskdjfvd</span>
-        <button class="closeDialog" @click="closeDialog">exit</button>
+        <button class="closeDialog" @click="closeDialog()">exit</button>
       </dialog>
     </div>
   </div>
@@ -76,13 +94,12 @@
 
 <script>
 export default {
-  name: "HelloWorld",
   data() {
     return {
-      projectName: "",
-      mousePosition: "",
-      textarea1Visible: true,
-      textarea2Visible: false,
+      projectName: "WindowEditor",
+      mousePosition: { x: 0, y: 0 },
+      textarea1: true,
+      textarea2: false,
       loaderProgress: 0,
       painting: false,
       startX: 0,
@@ -129,44 +146,50 @@ export default {
       this.startX = e.clientX;
       this.startY = e.clientY;
     },
-  },
-  draw(e) {
-    // Проверяем, нажата ли кнопка мыши
-    if (this.painting) {
-      const canvas = this.$refs.canvas;
-      const ctx = canvas.getContext("2d");
 
-      // Рисуем линию от предыдущих координат до текущих
-      ctx.beginPath();
-      ctx.moveTo(this.startX, this.startY);
-      ctx.lineTo(e.clientX, e.clientY);
-      ctx.stroke();
+    draw(e) {
+      // Проверяем, нажата ли кнопка мыши
+      if (this.painting) {
+        const canvas = this.$refs.canvas;
+        const ctx = canvas.getContext("2d");
 
-      // Обновляем начальные координаты для следующей точки
-      this.startX = e.clientX;
-      this.startY = e.clientY;
-    }
-  },
-  handleMouseUp() {
-    // Завершаем рисование
-    this.painting = false;
-  },
-  handleMouseLeave() {
-    // Если курсор ушел за пределы холста, завершаем рисование
-    this.painting = false;
-  },
-  changeMode(newMode) {
-    this.mode = newMode;
-  },
-  querySec() {
-    this.textarea1Visible = !this.textarea1Visible;
-    this.textarea2Visible = !this.textarea2Visible;
-  },
-  openDialog() {
-    this.$refs.diaOptions.showModal();
-  },
-  closeDialog() {
-    this.$refs.diaOptions.close();
+        // Рисуем линию от предыдущих координат до текущих
+        ctx.beginPath();
+        ctx.moveTo(this.startX, this.startY);
+        ctx.lineTo(e.clientX, e.clientY);
+        ctx.stroke();
+
+        // Обновляем начальные координаты для следующей точки
+        this.startX = e.clientX;
+        this.startY = e.clientY;
+      }
+    },
+    handleMouseUp() {
+      // Завершаем рисование
+      this.painting = false;
+    },
+    handleMouseLeave() {
+      // Если курсор ушел за пределы холста, завершаем рисование
+      this.painting = false;
+    },
+    changeMode(newMode) {
+      this.mode = newMode;
+    },
+    querySec1() {
+      this.textarea2 = true;
+      this.textarea1 = false;
+    },
+    querySec2() {
+      this.textarea2 = false;
+      this.textarea1 = true;
+    },
+    openDialog() {
+      console.log("sadadadasd");
+      this.$refs.diaOptions.showModal();
+    },
+    closeDialog() {
+      this.$refs.diaOptions.close();
+    },
   },
 };
 </script>
@@ -180,7 +203,7 @@ body {
   padding: 0;
   background-color: #464646;
 }
-.leftPanel {    
+.leftPanel {
   width: 13%;
   margin: 10px 25px 10px 10px;
 }
@@ -196,7 +219,7 @@ body {
 }
 .listLayers {
   margin-top: 25px;
-  background-color:   #2c2c2c;
+  background-color: #2c2c2c;
   height: 52vh;
   display: flex;
   flex-direction: column;
@@ -224,13 +247,9 @@ body {
 .infoElement {
   height: 38vh;
   margin-top: 15px;
-  background-color:   #2c2c2c;
+  background-color: #2c2c2c;
   border-radius: 6px;
 }
-
-
-
-
 
 .rightPanel {
   display: flex;
@@ -243,7 +262,7 @@ body {
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
-  background-color:   #2c2c2c;
+  background-color: #2c2c2c;
   width: 100%;
   height: 32px;
   border-radius: 10px 10px 0 0;
@@ -264,7 +283,7 @@ body {
   background-color: #868686;
 }
 
-#canvas {
+canvas {
   border: 1px solid black;
   border-radius: 0 0 21px 21px;
   background-color: white;
@@ -297,7 +316,7 @@ body {
   color: #000000;
   border: none;
 }
-#selection-2 { 
+#selection-2 {
   height: 4vh;
   width: 44%;
   border-radius: 12px;
@@ -313,7 +332,8 @@ body {
   height: 21vh;
   width: 98%;
   background-color: #ffffff;
-  color: #000000;display: block; 
+  color: #000000;
+  display: block;
 }
 #textarea-2 {
   padding-left: 10px;
@@ -361,7 +381,7 @@ button:hover {
   margin: 8px 0px 0px 5px;
   background-color: aqua;
 }
-.loader{
+.loader {
   display: block;
   position: relative;
   height: 16px;
@@ -370,8 +390,8 @@ button:hover {
   border-radius: 12px;
   overflow: hidden;
 }
-.loader:after{
-  content: '';
+.loader:after {
+  content: "";
   position: absolute;
   padding: 7px;
   top: 1px;
@@ -387,15 +407,14 @@ button:hover {
   color: #000;
 }
 @keyframes prog {
-  to  {   
+  to {
     width: 94%;
   }
 }
 .loader-text::before {
   /* Отображаем текст с процентом, который задается переменной --progress */
-  content: attr(data-progress, '%');
+  content: attr(data-progress, "%");
 }
-
 
 /*   Open state of the dialog  */
 dialog[open] {
@@ -407,11 +426,8 @@ dialog[open] {
 dialog {
   opacity: 0;
   transform: scaleY(0);
-  transition:
-    opacity 0.7s ease-out,
-    transform 0.7s ease-out,
-    overlay 0.7s ease-out allow-discrete,
-    display 0.7s ease-out allow-discrete;
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out,
+    overlay 0.7s ease-out allow-discrete, display 0.7s ease-out allow-discrete;
   /* Equivalent to
   transition: all 0.7s allow-discrete; */
 }
@@ -429,9 +445,7 @@ dialog {
 /* Transition the :backdrop when the dialog modal is promoted to the top layer */
 dialog::backdrop {
   background-color: rgb(0 0 0 / 0%);
-  transition:
-    display 0.7s allow-discrete,
-    overlay 0.7s allow-discrete,
+  transition: display 0.7s allow-discrete, overlay 0.7s allow-discrete,
     background-color 0.7s;
   /* Equivalent to
   transition: all 0.7s allow-discrete; */

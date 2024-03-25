@@ -1,29 +1,32 @@
 <template>
   <div id="app">
-    <HelloWorld />
+    <WindowEditor />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import WindowEditor from "./components/WindowEditor.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    WindowEditor,
   },
 };
 </script>
 
 <style>
-#app {
+body {
+  margin: 0;
+  padding: 0;
+}
+.app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #ffffff;
-  margin-top: 60px;
-  background-color: white;
+  background-color: #464646;
   display: flex;
   flex-direction: row;
   align-items: flex-start
